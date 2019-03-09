@@ -114,6 +114,7 @@ class _LessonChooserDialogState extends State<LessonChooserDialog> {
                   children: state.lessons
                       .map((lesson) => CheckboxListTile(
                             title: Text(lesson.title),
+                            activeColor: Theme.of(context).accentColor,
                             value: selectedLessonIds.contains(lesson.id),
                             onChanged: (newValue) {
                               setState(() {
