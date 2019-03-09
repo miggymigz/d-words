@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:chinese_words/models.dart';
 import 'package:chinese_words/store.dart';
 import 'package:chinese_words/widgets.dart';
 
@@ -46,6 +47,8 @@ class LessonsList extends StatelessWidget {
                 final lesson = lessons[i];
                 final tileTitle = '第${lesson.order}课';
                 final tileSubtitle = lesson.title;
+                final textStyle = avatarTextStyle.copyWith(
+                    color: Theme.of(context).primaryColor);
 
                 return ListTile(
                     key: Key(lesson.title),
@@ -53,7 +56,7 @@ class LessonsList extends StatelessWidget {
                         backgroundColor: Theme.of(context).accentColor,
                         child: Text(
                           lesson.order.toString(),
-                          style: avatarTextStyle,
+                          style: textStyle,
                         )),
                     title: Text(tileTitle),
                     subtitle: Text(tileSubtitle),
@@ -108,6 +111,7 @@ class LessonChooserDialog extends StatelessWidget {
               child: Text('START TEST'),
             ),
             onPressed: () {
+              Navigator.pop(context);
               Navigator.push(context, _buildQuizPageRoute());
             },
           )
@@ -120,7 +124,7 @@ class LessonChooserDialog extends StatelessWidget {
       final selectedLessons = stateSnapshot.selectedLessons;
 
       // make new list from snapshot so as not to unknowlingly modify state
-      final lessons = List.from(stateSnapshot.lessons);
+      final lessons = List<Lesson>.from(stateSnapshot.lessons);
 
       lessons.retainWhere((lesson) => selectedLessons.contains(lesson.order));
       final words = lessons.expand((lesson) => lesson.words).toList();

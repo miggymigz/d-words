@@ -27,9 +27,7 @@ class FancyButton extends StatelessWidget {
                 ),
                 SizedBox(width: 8),
                 Text(label,
-                    style: TextStyle(
-                        color: theme.accentTextTheme.button.color,
-                        fontSize: 16)),
+                    style: TextStyle(color: theme.primaryColor, fontSize: 16)),
               ],
             )),
         onPressed: onTap);

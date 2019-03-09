@@ -17,7 +17,7 @@ class WordsApp extends StatelessWidget {
       store: store,
       child: MaterialApp(
         title: title,
-        theme: ThemeData.dark(),
+        theme: ThemeData.dark().copyWith(accentColor: Colors.blueAccent),
         home: LessonsList(title: 'Words'),
       ),
     );
