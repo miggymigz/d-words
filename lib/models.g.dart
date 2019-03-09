@@ -8,6 +8,7 @@ part of 'models.dart';
 
 Word _$WordFromJson(Map<String, dynamic> json) {
   return Word(
+      id: json['id'] as String,
       word: json['word'] as String,
       pinyin: json['pinyin'] as String,
       definition: json['definition'] as String,
@@ -15,6 +16,7 @@ Word _$WordFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$WordToJson(Word instance) => <String, dynamic>{
+      'id': instance.id,
       'word': instance.word,
       'pinyin': instance.pinyin,
       'definition': instance.definition,
@@ -23,15 +25,17 @@ Map<String, dynamic> _$WordToJson(Word instance) => <String, dynamic>{
 
 Lesson _$LessonFromJson(Map<String, dynamic> json) {
   return Lesson(
-      order: json['order'] as int,
+      id: json['id'] as String,
       title: json['title'] as String,
+      subtitle: json['subtitle'] as String,
       words: (json['words'] as List)
           .map((e) => Word.fromJson(e as Map<String, dynamic>))
           .toList());
 }
 
 Map<String, dynamic> _$LessonToJson(Lesson instance) => <String, dynamic>{
-      'order': instance.order,
+      'id': instance.id,
       'title': instance.title,
+      'subtitle': instance.subtitle,
       'words': instance.words
     };

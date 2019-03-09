@@ -45,8 +45,6 @@ class LessonsList extends StatelessWidget {
               itemCount: lessons.length,
               itemBuilder: (context, i) {
                 final lesson = lessons[i];
-                final tileTitle = '第${lesson.order}课';
-                final tileSubtitle = lesson.title;
                 final textStyle = avatarTextStyle.copyWith(
                     color: Theme.of(context).primaryColor);
 
@@ -55,11 +53,11 @@ class LessonsList extends StatelessWidget {
                     leading: CircleAvatar(
                         backgroundColor: Theme.of(context).accentColor,
                         child: Text(
-                          lesson.order.toString(),
+                          (i + 1).toString(),
                           style: textStyle,
                         )),
-                    title: Text(tileTitle),
-                    subtitle: Text(tileSubtitle),
+                    title: Text(lesson.title),
+                    subtitle: Text(lesson.subtitle),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -84,7 +82,7 @@ class LessonChooserDialog extends StatefulWidget {
 }
 
 class _LessonChooserDialogState extends State<LessonChooserDialog> {
-  final Set<int> selectedLessons = {};
+  final Set<String> selectedLessonIds = {};
 
   @override
   Widget build(BuildContext context) {
@@ -99,13 +97,13 @@ class _LessonChooserDialogState extends State<LessonChooserDialog> {
                   children: state.lessons
                       .map((lesson) => CheckboxListTile(
                             title: Text(lesson.title),
-                            value: selectedLessons.contains(lesson.order),
+                            value: selectedLessonIds.contains(lesson.id),
                             onChanged: (newValue) {
                               setState(() {
                                 if (newValue) {
-                                  selectedLessons.add(lesson.order);
+                                  selectedLessonIds.add(lesson.id);
                                 } else {
-                                  selectedLessons.remove(lesson.order);
+                                  selectedLessonIds.remove(lesson.id);
                                 }
                               });
                             },
@@ -136,7 +134,7 @@ class _LessonChooserDialogState extends State<LessonChooserDialog> {
       // make new list from snapshot so as not to unknowlingly modify state
       final lessons = List<Lesson>.from(stateSnapshot.lessons);
 
-      lessons.retainWhere((lesson) => selectedLessons.contains(lesson.order));
+      lessons.retainWhere((lesson) => selectedLessonIds.contains(lesson.id));
       final words = lessons.expand((lesson) => lesson.words).toList();
 
       return WordsQuiz(words: words);

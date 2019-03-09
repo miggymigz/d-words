@@ -4,8 +4,9 @@ part 'models.g.dart';
 
 @JsonSerializable(nullable: false)
 class Word {
-  Word({this.word, this.pinyin, this.definition, this.partOfSpeech});
+  Word({this.id, this.word, this.pinyin, this.definition, this.partOfSpeech});
 
+  final String id;
   final String word;
   final String pinyin;
   final String definition;
@@ -17,10 +18,11 @@ class Word {
 
 @JsonSerializable(nullable: false)
 class Lesson {
-  Lesson({this.order, this.title, this.words});
+  Lesson({this.id, this.title, this.subtitle, this.words});
 
-  final int order;
+  final String id;
   final String title;
+  final String subtitle;
   final List<Word> words;
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);

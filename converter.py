@@ -15,24 +15,28 @@ for csv_filename in CSV_FILES:
         print('%s is an invalid filename!' % csv_filename)
         sys.exit(1)
 
+    lesson_order = groups[1]
     with io.open('assets/%s.csv' % csv_filename, 'r', encoding='utf8') as csv_file:
         csv_reader = csv.reader(csv_file)
 
         lesson = {
-            'order': int(groups[1]),
+            'id': 'd%s' % lesson_order,
             'title': '',
+            'subtitle': '',
             'words': [
             ]
         }
 
         first = True
-        for row in csv_reader:
+        for (i, row) in enumerate(csv_reader):
             if first:
-                lesson['title'] = row[0]
+                lesson['title'] = '第%s课' % lesson_order
+                lesson['subtitle'] = row[0]
                 first = False
                 continue
 
             lesson['words'].append({
+                'id': 'd%s_%d' % (lesson_order, i),
                 'word': row[0],
                 'pinyin': row[1],
                 'partOfSpeech': row[2],
