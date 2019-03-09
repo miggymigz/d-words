@@ -13,3 +13,15 @@ class LoadErrorAction {
 
   LoadErrorAction(this.error);
 }
+
+class SelectLessonAction {
+  final int order;
+
+  SelectLessonAction(this.order);
+}
+
+class UnselectLessonAction {
+  final int order;
+
+  UnselectLessonAction(this.order);
+}
