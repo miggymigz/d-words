@@ -29,7 +29,7 @@ Future<Store<AppState>> createStore() async {
   // fetch lessons if initialState is null
   // e.g., first install of app or user cleared data
   if (loadedInitialState.lessons.length == 0) {
-    store.dispatch(InitializeLessonsAction());
+    store.dispatch(FetchLessonsAction());
   }
 
   return store;

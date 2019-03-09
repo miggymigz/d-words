@@ -36,18 +36,18 @@ class _WordsQuizState extends State<WordsQuiz> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Try!')),
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
       body: GestureDetector(
         onTap: _onWordTapped,
         child: Column(
           children: <Widget>[
-            LinearProgressIndicator(value: _calculateProgress()),
             Expanded(
               child: Container(
                 padding: EdgeInsets.all(32),
                 child: _buildCurrentWord(),
               ),
             ),
+            LinearProgressIndicator(value: _calculateProgress()),
           ],
         ),
       ),

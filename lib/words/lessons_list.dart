@@ -18,16 +18,33 @@ class LessonsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(context),
       body: _buildBody(),
       floatingActionButton: _buildFab(context),
     );
   }
 
-  Widget _buildAppBar() {
+  Widget _buildAppBar(BuildContext context) {
     return AppBar(
-      title: Center(child: Text(title)),
+      title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+      centerTitle: true,
       elevation: 0,
+      backgroundColor: Colors.transparent,
+      actions: [
+        Builder(
+            builder: (context) => IconButton(
+                  icon: Icon(Icons.refresh),
+                  onPressed: () {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text('Updating lessons...'),
+                      duration: Duration(seconds: 1),
+                    ));
+
+                    StoreProvider.of<AppState>(context)
+                        .dispatch(FetchLessonsAction());
+                  },
+                )),
+      ],
     );
   }
 

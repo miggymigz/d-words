@@ -1,6 +1,6 @@
 import 'package:chinese_words/models.dart';
 
-class InitializeLessonsAction {}
+class FetchLessonsAction {}
 
 class LoadLessonsAction {
   final List<Lesson> lessons;

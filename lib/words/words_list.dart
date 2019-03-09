@@ -11,9 +11,15 @@ class WordsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(title), elevation: 0),
+        appBar: AppBar(
+          title: Text(title),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
         body: ListView.builder(
-            itemCount: lesson.words.length, itemBuilder: _buildRow));
+          itemCount: lesson.words.length,
+          itemBuilder: _buildRow,
+        ));
   }
 
   Widget _buildRow(BuildContext context, int index) {

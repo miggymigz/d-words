@@ -9,7 +9,7 @@ import 'actions.dart';
 import 'state.dart';
 
 Stream<dynamic> initializeLessons(
-        Stream<InitializeLessonsAction> actions, EpicStore<AppState> store) =>
+        Stream<FetchLessonsAction> actions, EpicStore<AppState> store) =>
     actions.asyncMap((action) => _loadLessons()
         .then((lessons) => LoadLessonsAction(lessons))
         .catchError((error) => LoadErrorAction(error)));
@@ -22,5 +22,5 @@ Future<List<Lesson>> _loadLessons() async {
 }
 
 final initializeLessonEpic =
-    TypedEpic<AppState, InitializeLessonsAction>(initializeLessons);
+    TypedEpic<AppState, FetchLessonsAction>(initializeLessons);
 final appMiddleware = EpicMiddleware<AppState>(initializeLessonEpic);
