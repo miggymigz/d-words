@@ -194,7 +194,7 @@ packages:
     source: hosted
     version: "0.13.3+3"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.flutter-io.cn"
@@ -298,6 +298,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.6.2"
+  path_provider:
+    dependency: transitive
+    description:
+      name: path_provider
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.5.0+1"
   pedantic:
     dependency: transitive
     description:
@@ -354,6 +361,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.10.4"
+  redux_persist:
+    dependency: "direct main"
+    description:
+      name: redux_persist
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.8.2"
+  redux_persist_flutter:
+    dependency: "direct main"
+    description:
+      name: redux_persist_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.8.1"
   rxdart:
     dependency: transitive
     description:
@@ -361,6 +382,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.20.0"
+  shared_preferences:
+    dependency: transitive
+    description:
+      name: shared_preferences
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.5.1+1"
   shelf:
     dependency: transitive
     description:
@@ -422,6 +450,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.4"
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.0"
   term_glyph:
     dependency: transitive
     description:
@@ -487,3 +522,4 @@ packages:
     version: "2.1.15"
 sdks:
   dart: ">=2.1.0 <3.0.0"
+  flutter: ">=0.1.4 <2.0.0"

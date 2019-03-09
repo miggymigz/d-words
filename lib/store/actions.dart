@@ -13,10 +13,3 @@ class LoadErrorAction {
 
   LoadErrorAction(this.error);
 }
-
-class ChangeLessonSelectionAction {
-  final int order;
-  final bool selected;
-
-  ChangeLessonSelectionAction(this.order, this.selected);
-}

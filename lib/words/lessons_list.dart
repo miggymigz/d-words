@@ -78,10 +78,13 @@ class LessonsList extends StatelessWidget {
   }
 }
 
-class LessonChooserDialog extends StatelessWidget {
-  const LessonChooserDialog({
-    Key key,
-  }) : super(key: key);
+class LessonChooserDialog extends StatefulWidget {
+  @override
+  _LessonChooserDialogState createState() => _LessonChooserDialogState();
+}
+
+class _LessonChooserDialogState extends State<LessonChooserDialog> {
+  final Set<int> selectedLessons = {};
 
   @override
   Widget build(BuildContext context) {
@@ -96,11 +99,16 @@ class LessonChooserDialog extends StatelessWidget {
                   children: state.lessons
                       .map((lesson) => CheckboxListTile(
                             title: Text(lesson.title),
-                            value: state.selectedLessons.contains(lesson.order),
-                            onChanged: (newValue) =>
-                                StoreProvider.of<AppState>(context).dispatch(
-                                    ChangeLessonSelectionAction(
-                                        lesson.order, newValue)),
+                            value: selectedLessons.contains(lesson.order),
+                            onChanged: (newValue) {
+                              setState(() {
+                                if (newValue) {
+                                  selectedLessons.add(lesson.order);
+                                } else {
+                                  selectedLessons.remove(lesson.order);
+                                }
+                              });
+                            },
                           ))
                       .toList())),
         ),
@@ -108,7 +116,10 @@ class LessonChooserDialog extends StatelessWidget {
           FlatButton(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: Text('START TEST'),
+              child: Text(
+                'START TEST',
+                style: TextStyle(color: Theme.of(context).accentColor),
+              ),
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -121,7 +132,6 @@ class LessonChooserDialog extends StatelessWidget {
   Route _buildQuizPageRoute() {
     return MaterialPageRoute(builder: (context) {
       final stateSnapshot = StoreProvider.of<AppState>(context).state;
-      final selectedLessons = stateSnapshot.selectedLessons;
 
       // make new list from snapshot so as not to unknowlingly modify state
       final lessons = List<Lesson>.from(stateSnapshot.lessons);
