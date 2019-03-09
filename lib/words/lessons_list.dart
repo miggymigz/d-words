@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:chinese_words/models.dart';
 import 'package:chinese_words/store.dart';
 import 'package:chinese_words/widgets.dart';
 
@@ -71,63 +70,62 @@ class LessonsList extends StatelessWidget {
 
   Widget _buildFab(BuildContext context) {
     return FancyButton('Start Test', icon: Icons.explore, onTap: () {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-                title: Text('Choose Lessons'),
-                content: Container(
-                  width: double.maxFinite,
-                  height: 400,
-                  child: StoreConnector<AppState, AppState>(
-                      converter: (store) => store.state,
-                      builder: (context, state) => ListView(
-                          children: state.lessons
-                              .map((lesson) => CheckboxListTile(
-                                    title: Text(lesson.title),
-                                    value: state.selectedLessons
-                                        .contains(lesson.order),
-                                    onChanged: (changed) {
-                                      final store =
-                                          StoreProvider.of<AppState>(context);
+      showDialog(context: context, builder: (context) => LessonChooserDialog());
+    });
+  }
+}
 
-                                      if (changed) {
-                                        store.dispatch(
-                                            SelectLessonAction(lesson.order));
-                                      } else {
-                                        store.dispatch(
-                                            UnselectLessonAction(lesson.order));
-                                      }
-                                    },
-                                  ))
-                              .toList())),
-                ),
-                actions: [
-                  FlatButton(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      child: Text('START TEST'),
-                    ),
-                    onPressed: () {
-                        Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) {
-                                      final stateSnapshot = StoreProvider.of<AppState>(context).state;
-                                      final selectedLessons = stateSnapshot.selectedLessons;
-                                      final lessons = stateSnapshot.lessons;
-                                      
-                                      lessons.retainWhere((lesson) => selectedLessons.contains(lesson.order));
-                                      final words = lessons.expand((lesson) => lesson.words).toList();
-                                       
-                                      return WordsQuiz(words: words);
-                                    } 
-                                    ));
-                      },
-                  )
-                ]);
-          });
+class LessonChooserDialog extends StatelessWidget {
+  const LessonChooserDialog({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+        title: Text('Choose Lessons'),
+        content: Container(
+          width: double.maxFinite,
+          height: 400,
+          child: StoreConnector<AppState, AppState>(
+              converter: (store) => store.state,
+              builder: (context, state) => ListView(
+                  children: state.lessons
+                      .map((lesson) => CheckboxListTile(
+                            title: Text(lesson.title),
+                            value: state.selectedLessons.contains(lesson.order),
+                            onChanged: (newValue) =>
+                                StoreProvider.of<AppState>(context).dispatch(
+                                    ChangeLessonSelectionAction(
+                                        lesson.order, newValue)),
+                          ))
+                      .toList())),
+        ),
+        actions: [
+          FlatButton(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Text('START TEST'),
+            ),
+            onPressed: () {
+              Navigator.push(context, _buildQuizPageRoute());
+            },
+          )
+        ]);
+  }
+
+  Route _buildQuizPageRoute() {
+    return MaterialPageRoute(builder: (context) {
+      final stateSnapshot = StoreProvider.of<AppState>(context).state;
+      final selectedLessons = stateSnapshot.selectedLessons;
+
+      // make new list from snapshot so as not to unknowlingly modify state
+      final lessons = List.from(stateSnapshot.lessons);
+
+      lessons.retainWhere((lesson) => selectedLessons.contains(lesson.order));
+      final words = lessons.expand((lesson) => lesson.words).toList();
+
+      return WordsQuiz(words: words);
     });
   }
 }

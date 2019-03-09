@@ -14,14 +14,9 @@ class LoadErrorAction {
   LoadErrorAction(this.error);
 }
 
-class SelectLessonAction {
+class ChangeLessonSelectionAction {
   final int order;
+  final bool selected;
 
-  SelectLessonAction(this.order);
-}
-
-class UnselectLessonAction {
-  final int order;
-
-  UnselectLessonAction(this.order);
+  ChangeLessonSelectionAction(this.order, this.selected);
 }

@@ -2,41 +2,30 @@ import 'state.dart';
 import 'actions.dart';
 
 AppState appReducers(AppState state, dynamic action) {
-  if (action is InitializeLessonsAction) {
-    return initializeLessons(state, action);
-  }
-
   if (action is LoadLessonsAction) {
     return loadLessons(state, action);
   }
 
-  if (action is SelectLessonAction) {
-    return selectLesson(state, action);
+  if (action is ChangeLessonSelectionAction) {
+    return changeLessonSelection(state, action);
   }
 
-  if (action is UnselectLessonAction) {
-    return unselectLesson(state, action);
-  }
-
-  return state;
-}
-
-AppState initializeLessons(AppState state, InitializeLessonsAction action) {
   return state;
 }
 
 AppState loadLessons(AppState state, LoadLessonsAction action) {
-  return AppState(action.lessons, state.selectedLessons);
+  return state.copyWith(lessons: action.lessons);
 }
 
-AppState selectLesson(AppState state, SelectLessonAction action) {
-  final Set<int> selectedLessons = Set<int>.from(state.selectedLessons)
-    ..add(action.order);
-  return AppState(state.lessons, selectedLessons);
-}
+AppState changeLessonSelection(
+    AppState state, ChangeLessonSelectionAction action) {
+  final newSelectedLessons = Set<int>.from(state.selectedLessons);
 
-AppState unselectLesson(AppState state, UnselectLessonAction action) {
-  final Set<int> selectedLessons = Set<int>.from(state.selectedLessons)
-    ..remove(action.order);
-  return AppState(state.lessons, selectedLessons);
+  if (action.selected) {
+    newSelectedLessons.add(action.order);
+  } else {
+    newSelectedLessons.remove(action.order);
+  }
+
+  return state.copyWith(selectedLessons: newSelectedLessons);
 }
