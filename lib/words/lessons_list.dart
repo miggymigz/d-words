@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+
 import 'package:chinese_words/models.dart';
 import 'package:chinese_words/store.dart';
 import 'package:chinese_words/widgets.dart';
+import 'package:chinese_words/localizations.dart';
 
 import 'words_list.dart';
 import 'quiz.dart';
 
 class LessonsList extends StatelessWidget {
-  LessonsList({Key key, this.title}) : super(key: key);
-
   static final avatarTextStyle =
       const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-
-  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +23,12 @@ class LessonsList extends StatelessWidget {
   }
 
   Widget _buildAppBar(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    final appBarTitle = localizations.pageLessonsTitle;
+    final updatingLessonsLabel = localizations.lblUpdatingLessons;
+
     return AppBar(
-      title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+      title: Text(appBarTitle, style: TextStyle(fontWeight: FontWeight.bold)),
       centerTitle: true,
       elevation: 0,
       backgroundColor: Colors.transparent,
@@ -36,7 +38,7 @@ class LessonsList extends StatelessWidget {
                   icon: Icon(Icons.refresh),
                   onPressed: () {
                     Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text('Updating lessons...'),
+                      content: Text(updatingLessonsLabel),
                       duration: Duration(seconds: 1),
                     ));
 
@@ -87,7 +89,8 @@ class LessonsList extends StatelessWidget {
   }
 
   Widget _buildFab(BuildContext context) {
-    return FancyButton('Start Test', icon: Icons.explore, onTap: () {
+    final fabLabel = AppLocalizations.of(context).btnStartTest;
+    return FancyButton(fabLabel, icon: Icons.explore, onTap: () {
       showDialog(context: context, builder: (context) => LessonChooserDialog());
     });
   }
@@ -103,8 +106,11 @@ class _LessonChooserDialogState extends State<LessonChooserDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final chooseLessonsLabel = AppLocalizations.of(context).lblChooseLessons;
+    final startQuizLabel = AppLocalizations.of(context).btnStartTest;
+
     return AlertDialog(
-        title: Text('Choose Lessons'),
+        title: Text(chooseLessonsLabel),
         content: Container(
           width: double.maxFinite,
           height: 400,
@@ -133,7 +139,7 @@ class _LessonChooserDialogState extends State<LessonChooserDialog> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Text(
-                'START TEST',
+                startQuizLabel,
                 style: TextStyle(color: Theme.of(context).accentColor),
               ),
             ),

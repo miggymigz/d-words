@@ -17,6 +17,11 @@ class WordsQuiz extends StatefulWidget {
 }
 
 class _WordsQuizState extends State<WordsQuiz> {
+  static const wordStyle = TextStyle(fontSize: 86);
+  static const pinyinStyle = TextStyle(fontSize: 24);
+  static const partOfSpeechStyle =
+      TextStyle(fontStyle: FontStyle.italic, color: Colors.white70);
+
   List<int> _indices = [];
   Word _currentWord;
   int _currentIndex;
@@ -90,19 +95,26 @@ class _WordsQuizState extends State<WordsQuiz> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(_currentWord.word, style: TextStyle(fontSize: 86)),
+          Text(
+            _currentWord.word,
+            style: wordStyle,
+            textAlign: TextAlign.center,
+          ),
           Opacity(
             opacity: _revealed ? 1 : 0,
-            child: Text(_currentWord.pinyin, style: TextStyle(fontSize: 24)),
+            child: Text(_currentWord.pinyin, style: pinyinStyle),
           ),
           Text(
             _currentWord.partOfSpeech + '词',
-            style: TextStyle(fontStyle: FontStyle.italic),
+            style: partOfSpeechStyle,
           ),
           SizedBox(height: 15),
           Opacity(
             opacity: _revealed ? 1 : 0,
-            child: Text(_currentWord.definition),
+            child: Text(
+              _currentWord.definition.replaceAll('*', ''),
+              textAlign: TextAlign.center,
+            ),
           ),
         ],
       ),
