@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 import 'package:chinese_words/models.dart';
 
@@ -29,7 +30,7 @@ class WordsList extends StatelessWidget {
     return ListTile(
       key: Key(word.word),
       title: Text(title),
-      subtitle: Text(word.definition),
+      subtitle: MarkdownBody(data: word.definition),
       trailing: Text(word.partOfSpeech),
       onTap: () {},
     );

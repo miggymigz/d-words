@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:chinese_words/models.dart';
-
 import 'dart:math';
+
+import 'package:flutter/material.dart';
+
+import 'package:chinese_words/models.dart';
 
 class WordsQuiz extends StatefulWidget {
   const WordsQuiz({
@@ -41,12 +42,7 @@ class _WordsQuizState extends State<WordsQuiz> {
         onTap: _onWordTapped,
         child: Column(
           children: <Widget>[
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(32),
-                child: _buildCurrentWord(),
-              ),
-            ),
+            Expanded(child: _buildCurrentWord()),
             LinearProgressIndicator(value: _calculateProgress()),
           ],
         ),
@@ -89,19 +85,27 @@ class _WordsQuizState extends State<WordsQuiz> {
   }
 
   Widget _buildCurrentWord() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(_currentWord.word, style: TextStyle(fontSize: 86)),
-        Opacity(
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(_currentWord.word, style: TextStyle(fontSize: 86)),
+          Opacity(
             opacity: _revealed ? 1 : 0,
-            child: Text(_currentWord.pinyin, style: TextStyle(fontSize: 24))),
-        Text(_currentWord.partOfSpeech + '词',
-            style: TextStyle(fontStyle: FontStyle.italic)),
-        SizedBox(height: 15),
-        Opacity(
-            opacity: _revealed ? 1 : 0, child: Text(_currentWord.definition)),
-      ],
+            child: Text(_currentWord.pinyin, style: TextStyle(fontSize: 24)),
+          ),
+          Text(
+            _currentWord.partOfSpeech + '词',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+          SizedBox(height: 15),
+          Opacity(
+            opacity: _revealed ? 1 : 0,
+            child: Text(_currentWord.definition),
+          ),
+        ],
+      ),
     );
   }
 }
