@@ -36,10 +36,12 @@ class LessonsList extends StatelessWidget {
           builder: (context) => IconButton(
                 icon: Icon(Icons.refresh, color: Colors.blueAccent),
                 onPressed: () {
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text(localizations.lblUpdatingLessons),
-                    duration: Duration(seconds: 1),
-                  ));
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(SnackBar(
+                      content: Text(localizations.lblUpdatingLessons),
+                      duration: Duration(seconds: 1),
+                    ));
 
                   StoreProvider.of<AppState>(context)
                       .dispatch(FetchLessonsAction());
