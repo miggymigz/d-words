@@ -63,7 +63,7 @@ class AppLocalizations {
         settingValHanziOnly: '한자 만',
         settingValPinyinOnly: '병음 만',
         settingValHanziPinyin: '병음과 한자 모두',
-        settingValNoneSelected: '선탱 안함',
+        settingValNoneSelected: '선택 안함',
         settingValLanguageEnglish: '영어',
         settingValLanguageKorean: '한국어',
         btnStartTest: '퀴즈 시작',
