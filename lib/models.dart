@@ -28,3 +28,5 @@ class Lesson {
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);
   Map<String, dynamic> toJson() => _$LessonToJson(this);
 }
+
+enum QuizType { PinyinOnly, HanziOnly, PinyinHanzi }

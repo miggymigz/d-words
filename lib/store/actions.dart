@@ -13,3 +13,16 @@ class LoadErrorAction {
 
   LoadErrorAction(this.error);
 }
+
+class ChangeLessonSelectionAction {
+  final String lessonId;
+  final bool selected;
+
+  ChangeLessonSelectionAction(this.lessonId, this.selected);
+}
+
+class ChangeQuizTypeAction {
+  final QuizType quizType;
+
+  ChangeQuizTypeAction(this.quizType);
+}

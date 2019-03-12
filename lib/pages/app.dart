@@ -24,12 +24,16 @@ class WordsApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        onGenerateTitle: (context) => AppLocalizations.of(context).title,
+        onGenerateTitle: (context) => AppLocalizations.of(context).app.title,
         supportedLocales: [
           const Locale('en', ''),
           const Locale('ko', ''),
         ],
-        theme: ThemeData.dark().copyWith(accentColor: Colors.blueAccent),
+        theme: ThemeData.dark().copyWith(
+          accentColor: Colors.blueAccent,
+          scaffoldBackgroundColor: Colors.black,
+          toggleableActiveColor: Colors.blueAccent,
+        ),
       ),
     );
   }
