@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:chinese_words/analytics.dart' as analytics;
 import 'package:chinese_words/helpers.dart';
 import 'package:chinese_words/localizations.dart';
 import 'package:chinese_words/models.dart';
@@ -96,6 +97,7 @@ class QuizSettings extends StatelessWidget {
             .toList();
         final quizType = stateSnapshot.quizType;
 
+        analytics.quizStarted(lessonIds: selectedLessonIds, quizType: quizType);
         Navigator.pop(context);
         Navigator.push(
           context,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:chinese_words/analytics.dart' as analytics;
 import 'package:chinese_words/models.dart';
 import 'package:chinese_words/store.dart';
 import 'package:chinese_words/widgets.dart';
@@ -43,6 +44,7 @@ class LessonsList extends StatelessWidget {
                       duration: Duration(seconds: 1),
                     ));
 
+                  analytics.refreshTapped();
                   StoreProvider.of<AppState>(context)
                       .dispatch(FetchLessonsAction());
                 },
@@ -87,6 +89,8 @@ class LessonsList extends StatelessWidget {
       subtitle: Text(lesson.subtitle),
       onTap: () {
         final title = '${lesson.title}：${lesson.subtitle}';
+
+        analytics.lessonViewed(lesson: lesson);
         Navigator.push(
             context,
             MaterialPageRoute(
