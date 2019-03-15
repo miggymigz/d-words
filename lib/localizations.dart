@@ -36,7 +36,7 @@ class AppLocalizations {
         settingValLessonsSelected: '{} lesson(s) selected',
         settingValLanguageEnglish: 'English',
         settingValLanguageKorean: 'Korean',
-        btnStartTest: 'START TEST',
+        btnStartTest: 'Start Test',
         dialogTitleChooseQuizType: 'Choose Quiz Type',
         dialogTitleChooseLessons: 'Choose Lessons',
         dialogTitleEmptySelectedLessons: 'Oops!',

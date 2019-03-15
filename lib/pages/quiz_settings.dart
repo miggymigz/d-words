@@ -6,7 +6,6 @@ import 'package:chinese_words/helpers.dart' as helper;
 import 'package:chinese_words/localizations.dart';
 import 'package:chinese_words/models.dart';
 import 'package:chinese_words/store.dart';
-import 'package:chinese_words/widgets.dart';
 
 import 'quiz.dart';
 
@@ -24,88 +23,111 @@ class QuizSettings extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.blueAccent),
       ),
       body: _buildBody(context),
-      floatingActionButton: _buildFab(context),
     );
   }
 
   Widget _buildBody(BuildContext context) {
     final localizations = AppLocalizations.of(context).quizSettings;
 
-    return ListView(children: [
-      ListTile(
-        title: Text(localizations.settingLblQuizType),
-        subtitle: StoreConnector<AppState, String>(
-          converter: (store) =>
-              helper.quizTypeToString(context, store.state.quizType),
-          builder: (context, quizType) => Text(quizType),
-        ),
-        onTap: () => showDialog<QuizType>(
-            context: context, builder: (context) => QuizTypeChooser()),
-      ),
-      ListTile(
-        title: Text(localizations.settingLblLessons),
-        subtitle: StoreConnector<AppState, AppState>(
-          converter: (store) => store.state,
-          builder: (context, state) {
-            if (state.selectedLessonIds.isEmpty) {
-              return Text(localizations.settingValNoneSelected,
-                  style: TextStyle(fontStyle: FontStyle.italic));
-            }
-
-            final selectedLessonsCount =
-                state.selectedLessonIds.length.toString();
-            final settingValue = localizations.settingValLessonsSelected
-                .replaceFirst('{}', selectedLessonsCount);
-            return Text(settingValue);
-          },
-        ),
-        onTap: () => showDialog<Set<String>>(
-            context: context, builder: (context) => LessonChooser()),
-      ),
-      ListTile(
-        title: Text(localizations.settingLblDefinitionLanguages),
-        subtitle: Text(localizations.settingValLanguageEnglish),
-        onTap: () => helper.alertInfo(
-              context,
-              message: AppLocalizations.of(context).app.lblFeatureNotAvailable,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          child: ListView(children: [
+            ListTile(
+              title: Text(localizations.settingLblQuizType),
+              subtitle: StoreConnector<AppState, String>(
+                converter: (store) =>
+                    helper.quizTypeToString(context, store.state.quizType),
+                builder: (context, quizType) => Text(quizType),
+              ),
+              onTap: () => showDialog<QuizType>(
+                  context: context, builder: (context) => QuizTypeChooser()),
             ),
-      )
-    ]);
+            ListTile(
+              title: Text(localizations.settingLblLessons),
+              subtitle: StoreConnector<AppState, AppState>(
+                converter: (store) => store.state,
+                builder: (context, state) {
+                  if (state.selectedLessonIds.isEmpty) {
+                    return Text(localizations.settingValNoneSelected,
+                        style: TextStyle(fontStyle: FontStyle.italic));
+                  }
+
+                  final selectedLessonsCount =
+                      state.selectedLessonIds.length.toString();
+                  final settingValue = localizations.settingValLessonsSelected
+                      .replaceFirst('{}', selectedLessonsCount);
+                  return Text(settingValue);
+                },
+              ),
+              onTap: () => showDialog<Set<String>>(
+                  context: context, builder: (context) => LessonChooser()),
+            ),
+            ListTile(
+              title: Text(localizations.settingLblDefinitionLanguages),
+              subtitle: Text(localizations.settingValLanguageEnglish),
+              onTap: () => helper.alertInfo(
+                    context,
+                    message:
+                        AppLocalizations.of(context).app.lblFeatureNotAvailable,
+                  ),
+            )
+          ]),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: _buildStartQuizButton(context),
+        ),
+      ],
+    );
   }
 
-  Widget _buildFab(BuildContext context) {
+  Widget _buildStartQuizButton(BuildContext context) {
     final localizations = AppLocalizations.of(context).quizSettings;
 
-    return FancyButton(
-      localizations.btnStartTest,
-      icon: Icons.explore,
-      onTap: () {
-        final stateSnapshot = StoreProvider.of<AppState>(context).state;
-        final selectedLessonIds = stateSnapshot.selectedLessonIds;
-        if (selectedLessonIds.isEmpty) {
-          helper.alertInfo(
-            context,
-            title: localizations.dialogTitleEmptySelectedLessons,
-            message: localizations.dialogMessageEmptySelectedLessons,
-          );
-          return;
-        }
-
-        final words = helper.getSelectedLessonsWords(stateSnapshot);
-        final quizType = stateSnapshot.quizType;
-
-        analytics.quizStarted(lessonIds: selectedLessonIds, quizType: quizType);
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => WordsQuiz(
-                  words: words,
-                  quizType: quizType,
-                ),
+    return SizedBox(
+      width: double.infinity,
+      child: RaisedButton(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+          child: Text(
+            localizations.btnStartTest,
+            style: TextStyle(
+              fontFamily: 'GoogleSans',
+              fontSize: 18,
+            ),
           ),
-        );
-      },
+        ),
+        onPressed: () {
+          final stateSnapshot = StoreProvider.of<AppState>(context).state;
+          final selectedLessonIds = stateSnapshot.selectedLessonIds;
+          if (selectedLessonIds.isEmpty) {
+            helper.alertInfo(
+              context,
+              title: localizations.dialogTitleEmptySelectedLessons,
+              message: localizations.dialogMessageEmptySelectedLessons,
+            );
+            return;
+          }
+
+          final words = helper.getSelectedLessonsWords(stateSnapshot);
+          final quizType = stateSnapshot.quizType;
+
+          analytics.quizStarted(
+              lessonIds: selectedLessonIds, quizType: quizType);
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => WordsQuiz(
+                    words: words,
+                    quizType: quizType,
+                  ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
