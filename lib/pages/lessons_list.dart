@@ -27,7 +27,11 @@ class LessonsList extends StatelessWidget {
     return AppBar(
       title: Text(
         localizations.title,
-        style: TextStyle(fontWeight: FontWeight.bold, color: accentColor),
+        style: TextStyle(
+          fontFamily: 'GoogleSans',
+          fontWeight: FontWeight.w700,
+          color: accentColor,
+      ),
       ),
       centerTitle: true,
       elevation: 0,

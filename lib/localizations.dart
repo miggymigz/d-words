@@ -21,7 +21,7 @@ class AppLocalizations {
       ),
       lessons: LessonLocalizedValues(
         title: 'D Words',
-        btnStartTest: 'START TEST',
+        btnStartTest: 'Start Test',
         lblUpdatingLessons: 'Updating Lessons...',
       ),
       quizSettings: QuizSettingsLocalizedValues(
