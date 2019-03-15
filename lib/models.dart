@@ -4,7 +4,8 @@ part 'models.g.dart';
 
 @JsonSerializable(nullable: false)
 class Word {
-  Word({this.id, this.word, this.pinyin, this.definition, this.partOfSpeech});
+  const Word(
+      {this.id, this.word, this.pinyin, this.definition, this.partOfSpeech});
 
   final String id;
   final String word;
@@ -18,7 +19,7 @@ class Word {
 
 @JsonSerializable(nullable: false)
 class Lesson {
-  Lesson({this.id, this.title, this.subtitle, this.words});
+  const Lesson({this.id, this.title, this.subtitle, this.words});
 
   final String id;
   final String title;
@@ -27,6 +28,19 @@ class Lesson {
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);
   Map<String, dynamic> toJson() => _$LessonToJson(this);
+}
+
+@JsonSerializable(nullable: false)
+class Collection {
+  const Collection({this.id, this.name, this.lessons});
+
+  final String id;
+  final String name;
+  final List<Lesson> lessons;
+
+  factory Collection.fromJson(Map<String, dynamic> json) =>
+      _$CollectionFromJson(json);
+  Map<String, dynamic> toJson() => _$CollectionToJson(this);
 }
 
 enum QuizType { PinyinOnly, HanziOnly, PinyinHanzi }

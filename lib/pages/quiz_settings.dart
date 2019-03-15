@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:chinese_words/analytics.dart' as analytics;
-import 'package:chinese_words/helpers.dart';
+import 'package:chinese_words/helpers.dart' as helper;
 import 'package:chinese_words/localizations.dart';
 import 'package:chinese_words/models.dart';
 import 'package:chinese_words/store.dart';
@@ -35,7 +35,8 @@ class QuizSettings extends StatelessWidget {
       ListTile(
         title: Text(localizations.settingLblQuizType),
         subtitle: StoreConnector<AppState, String>(
-          converter: (store) => quizTypeToString(context, store.state.quizType),
+          converter: (store) =>
+              helper.quizTypeToString(context, store.state.quizType),
           builder: (context, quizType) => Text(quizType),
         ),
         onTap: () => showDialog<QuizType>(
@@ -51,11 +52,11 @@ class QuizSettings extends StatelessWidget {
                   style: TextStyle(fontStyle: FontStyle.italic));
             }
 
-            return Text(state.lessons
-                .where((lesson) => state.selectedLessonIds.contains(lesson.id))
-                .map((lesson) => lesson.title)
-                .toList()
-                .join(', '));
+            final selectedLessonsCount =
+                state.selectedLessonIds.length.toString();
+            final settingValue = localizations.settingValLessonsSelected
+                .replaceFirst('{}', selectedLessonsCount);
+            return Text(settingValue);
           },
         ),
         onTap: () => showDialog<Set<String>>(
@@ -64,7 +65,7 @@ class QuizSettings extends StatelessWidget {
       ListTile(
         title: Text(localizations.settingLblDefinitionLanguages),
         subtitle: Text(localizations.settingValLanguageEnglish),
-        onTap: () => alertInfo(
+        onTap: () => helper.alertInfo(
               context,
               message: AppLocalizations.of(context).app.lblFeatureNotAvailable,
             ),
@@ -82,7 +83,7 @@ class QuizSettings extends StatelessWidget {
         final stateSnapshot = StoreProvider.of<AppState>(context).state;
         final selectedLessonIds = stateSnapshot.selectedLessonIds;
         if (selectedLessonIds.isEmpty) {
-          alertInfo(
+          helper.alertInfo(
             context,
             title: localizations.dialogTitleEmptySelectedLessons,
             message: localizations.dialogMessageEmptySelectedLessons,
@@ -90,11 +91,7 @@ class QuizSettings extends StatelessWidget {
           return;
         }
 
-        final lessons = stateSnapshot.lessons;
-        final words = lessons
-            .where((lesson) => selectedLessonIds.contains(lesson.id))
-            .expand((lesson) => lesson.words)
-            .toList();
+        final words = helper.getSelectedLessonsWords(stateSnapshot);
         final quizType = stateSnapshot.quizType;
 
         analytics.quizStarted(lessonIds: selectedLessonIds, quizType: quizType);
@@ -102,10 +99,11 @@ class QuizSettings extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => WordsQuiz(
-                    words: words,
-                    quizType: quizType,
-                  )),
+            builder: (context) => WordsQuiz(
+                  words: words,
+                  quizType: quizType,
+                ),
+          ),
         );
       },
     );
@@ -159,29 +157,57 @@ class LessonChooser extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context).quizSettings;
 
-    return AlertDialog(
-      title: Text(localizations.dialogTitleChooseLessons),
-      content: SingleChildScrollView(
-          child: StoreConnector<AppState, AppState>(
+    return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) {
-          final lessons = state.lessons;
+          final collections = state.collections;
           final selectedLessonIds = state.selectedLessonIds;
+          final items = helper.createListItems(collections);
 
-          return ListBody(
-            children: lessons
-                .map((lesson) => CheckboxListTile(
-                      title: Text(lesson.title),
-                      value: selectedLessonIds.contains(lesson.id),
-                      onChanged: (newValue) {
-                        StoreProvider.of<AppState>(context).dispatch(
-                            ChangeLessonSelectionAction(lesson.id, newValue));
-                      },
-                    ))
-                .toList(),
+          return SimpleDialog(
+            title: Text(localizations.dialogTitleChooseLessons),
+            children: items.map((item) {
+              final collectionIndex = item[0];
+              final collection = collections[collectionIndex];
+
+              final lessonIndex = item[1];
+              final lesson =
+                  lessonIndex == null ? null : collection.lessons[lessonIndex];
+              final lessonSelected = lesson != null
+                  ? selectedLessonIds.contains(lesson.id)
+                  : false;
+              return _buildRow(context, collection, lesson, lessonSelected);
+            }).toList(),
           );
-        },
-      )),
-    );
+        });
+  }
+
+  Widget _buildRow(BuildContext context, Collection collection, Lesson lesson,
+      bool lessonSelected) {
+    // create header item if lesson is null
+    return lesson == null
+        ? Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            child: Text(
+              collection.name,
+              style: TextStyle(color: Colors.white70),
+            ),
+          )
+        : SimpleDialogOption(
+            child: Row(
+              children: <Widget>[
+                Opacity(
+                  opacity: lessonSelected ? 1 : 0,
+                  child: Icon(Icons.check, color: Colors.blueAccent),
+                ),
+                SizedBox(width: 8),
+                Text(lesson.title),
+              ],
+            ),
+            onPressed: () {
+              StoreProvider.of<AppState>(context).dispatch(
+                  ChangeLessonSelectionAction(lesson.id, !lessonSelected));
+            },
+          );
   }
 }

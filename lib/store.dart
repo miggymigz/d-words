@@ -26,10 +26,10 @@ Future<Store<AppState>> createStore() async {
     middleware: [appMiddleware, persistor.createMiddleware()],
   );
 
-  // fetch lessons if initialState is null
+  // fetch collections if initialState is null
   // e.g., first install of app or user cleared data
-  if (loadedInitialState.lessons.length == 0) {
-    store.dispatch(FetchLessonsAction());
+  if (loadedInitialState.collections.length == 0) {
+    store.dispatch(FetchCollectionsAction());
   }
 
   return store;

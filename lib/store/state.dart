@@ -5,14 +5,18 @@ part 'state.g.dart';
 
 @JsonSerializable()
 class AppState {
-  final List<Lesson> lessons;
+  final List<Collection> collections;
   final Set<String> selectedLessonIds;
   final QuizType quizType;
 
-  AppState({this.lessons, this.selectedLessonIds, this.quizType});
+  AppState({
+    this.collections,
+    this.selectedLessonIds,
+    this.quizType,
+  });
 
   factory AppState.initial() => AppState(
-        lessons: List.unmodifiable([]),
+        collections: List.unmodifiable([]),
         selectedLessonIds: {},
         quizType: QuizType.HanziOnly,
       );
@@ -21,11 +25,11 @@ class AppState {
       _$AppStateFromJson(json);
 
   AppState copyWith(
-          {List<Lesson> lessons,
+          {List<Collection> collections,
           Set<String> selectedLessonIds,
           QuizType quizType}) =>
       AppState(
-        lessons: lessons ?? this.lessons,
+        collections: collections ?? this.collections,
         selectedLessonIds: selectedLessonIds ?? this.selectedLessonIds,
         quizType: quizType ?? this.quizType,
       );

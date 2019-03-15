@@ -1,11 +1,11 @@
 import 'package:chinese_words/models.dart';
 
-class FetchLessonsAction {}
+class FetchCollectionsAction {}
 
-class LoadLessonsAction {
-  final List<Lesson> lessons;
+class LoadCollectionsAction {
+  final List<Collection> collections;
 
-  LoadLessonsAction(this.lessons);
+  LoadCollectionsAction(this.collections);
 }
 
 class LoadErrorAction {

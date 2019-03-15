@@ -8,9 +8,9 @@ part of 'state.dart';
 
 AppState _$AppStateFromJson(Map<String, dynamic> json) {
   return AppState(
-      lessons: (json['lessons'] as List)
+      collections: (json['collections'] as List)
           ?.map((e) =>
-              e == null ? null : Lesson.fromJson(e as Map<String, dynamic>))
+              e == null ? null : Collection.fromJson(e as Map<String, dynamic>))
           ?.toList(),
       selectedLessonIds:
           (json['selectedLessonIds'] as List)?.map((e) => e as String)?.toSet(),
@@ -18,7 +18,7 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
-      'lessons': instance.lessons,
+      'collections': instance.collections,
       'selectedLessonIds': instance.selectedLessonIds?.toList(),
       'quizType': _$QuizTypeEnumMap[instance.quizType]
     };

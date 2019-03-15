@@ -9,23 +9,24 @@ import 'package:rxdart/rxdart.dart';
 import 'actions.dart';
 import 'state.dart';
 
-const resourceUrl = 'https://gitee.com/miggymigz/words/raw/master/output.json';
+const resourceUrl = 'https://gitee.com/miggymigz/words/raw/master/v2.json';
 
-Stream<dynamic> fetchLessons(
-  Stream<FetchLessonsAction> actions,
+Stream<dynamic> fetchCollections(
+  Stream<FetchCollectionsAction> actions,
   EpicStore<AppState> store,
 ) =>
     Observable(actions).exhaustMap((action) =>
-        Observable.fromFuture(_fetchLessons())
-            .map((lessons) => LoadLessonsAction(lessons))
+        Observable.fromFuture(_fetchCollections())
+            .map((collections) => LoadCollectionsAction(collections))
             .handleError((error) => LoadErrorAction(error)));
 
-Future<List<Lesson>> _fetchLessons() async {
+Future<List<Collection>> _fetchCollections() async {
   final response = await http.get(resourceUrl);
   return (jsonDecode(response.body) as List)
-      .map((obj) => Lesson.fromJson(obj))
+      .map((obj) => Collection.fromJson(obj))
       .toList();
 }
 
-final fetchLessonsEpic = TypedEpic<AppState, FetchLessonsAction>(fetchLessons);
-final appMiddleware = EpicMiddleware<AppState>(fetchLessonsEpic);
+final fetchCollectionsEpic =
+    TypedEpic<AppState, FetchCollectionsAction>(fetchCollections);
+final appMiddleware = EpicMiddleware<AppState>(fetchCollectionsEpic);

@@ -2,8 +2,8 @@ import 'state.dart';
 import 'actions.dart';
 
 AppState appReducers(AppState state, dynamic action) {
-  if (action is LoadLessonsAction) {
-    return loadLessons(state, action);
+  if (action is LoadCollectionsAction) {
+    return loadCollections(state, action);
   }
 
   if (action is ChangeLessonSelectionAction) {
@@ -17,8 +17,8 @@ AppState appReducers(AppState state, dynamic action) {
   return state;
 }
 
-AppState loadLessons(AppState state, LoadLessonsAction action) {
-  return state.copyWith(lessons: action.lessons);
+AppState loadCollections(AppState state, LoadCollectionsAction action) {
+  return state.copyWith(collections: action.collections);
 }
 
 AppState changeLessonSelection(

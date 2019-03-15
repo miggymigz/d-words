@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:chinese_words/analytics.dart' as analytics;
+import 'package:chinese_words/localizations.dart';
+import 'package:chinese_words/helpers.dart' as helper;
 import 'package:chinese_words/models.dart';
 import 'package:chinese_words/store.dart';
 import 'package:chinese_words/widgets.dart';
-import 'package:chinese_words/localizations.dart';
 
 import 'words_list.dart';
 import 'quiz_settings.dart';
@@ -31,7 +32,7 @@ class LessonsList extends StatelessWidget {
           fontFamily: 'GoogleSans',
           fontWeight: FontWeight.w700,
           color: accentColor,
-      ),
+        ),
       ),
       centerTitle: true,
       elevation: 0,
@@ -50,7 +51,7 @@ class LessonsList extends StatelessWidget {
 
                   analytics.refreshTapped();
                   StoreProvider.of<AppState>(context)
-                      .dispatch(FetchLessonsAction());
+                      .dispatch(FetchCollectionsAction());
                 },
               ),
         ),
@@ -62,17 +63,40 @@ class LessonsList extends StatelessWidget {
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
-        final lessons = state.lessons;
-
-        if (lessons.isEmpty) {
+        if (state.collections.length == 0) {
           return Center(child: CircularProgressIndicator());
         }
 
+        final collections = state.collections;
+        final items = helper.createListItems(collections);
+
         return ListView.builder(
-          itemCount: lessons.length,
-          itemBuilder: (context, i) => _buildLessonRow(context, lessons[i], i),
+          itemCount: items.length,
+          itemBuilder: (context, i) {
+            final collectionIndex = items[i][0];
+            final collection = collections[collectionIndex];
+
+            // header row
+            if (items[i][1] == null) {
+              return _buildCollectionHeader(collection);
+            }
+
+            final lessonIndex = items[i][1];
+            final lesson = collection.lessons[lessonIndex];
+            return _buildLessonRow(context, lesson, lessonIndex);
+          },
         );
       },
+    );
+  }
+
+  Widget _buildCollectionHeader(Collection collection) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Text(
+        collection.name,
+        style: TextStyle(color: Colors.white70),
+      ),
     );
   }
 

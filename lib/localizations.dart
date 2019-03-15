@@ -33,6 +33,7 @@ class AppLocalizations {
         settingValPinyinOnly: 'Pinyin Only',
         settingValHanziPinyin: 'Both Chinese Characters and Pinyin',
         settingValNoneSelected: 'None Selected',
+        settingValLessonsSelected: '{} lesson(s) selected',
         settingValLanguageEnglish: 'English',
         settingValLanguageKorean: 'Korean',
         btnStartTest: 'START TEST',
@@ -64,6 +65,7 @@ class AppLocalizations {
         settingValPinyinOnly: '병음 만',
         settingValHanziPinyin: '병음과 한자 모두',
         settingValNoneSelected: '선택 안함',
+        settingValLessonsSelected: '{} 강의 선택',
         settingValLanguageEnglish: '영어',
         settingValLanguageKorean: '한국어',
         btnStartTest: '퀴즈 시작',
@@ -146,6 +148,7 @@ class QuizSettingsLocalizedValues {
     @required this.settingValPinyinOnly,
     @required this.settingValHanziPinyin,
     @required this.settingValNoneSelected,
+    @required this.settingValLessonsSelected,
     @required this.settingValLanguageEnglish,
     @required this.settingValLanguageKorean,
     @required this.btnStartTest,
@@ -162,6 +165,7 @@ class QuizSettingsLocalizedValues {
   final String settingValPinyinOnly;
   final String settingValHanziPinyin;
   final String settingValNoneSelected;
+  final String settingValLessonsSelected;
   final String settingValLanguageEnglish;
   final String settingValLanguageKorean;
   final String btnStartTest;
