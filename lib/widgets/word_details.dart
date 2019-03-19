@@ -24,6 +24,18 @@ class WordDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // some words doesn't have part of speech
+    // and it shouldn't be displayed if it isn't given
+    final shouldShowPartOfSpeech = word.partOfSpeech != '' && showPartOfSpeech;
+
+    // properly build part of speech
+    // e.g., if a word has multiple part of speech,
+    // each part of speech should have 词 at the end (except 成)
+    final partOfSpeech = word.partOfSpeech
+        .split('、')
+        .map((pos) => pos == '成' ? pos + '语' : pos + '词')
+        .join('、');
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
@@ -41,9 +53,9 @@ class WordDetails extends StatelessWidget {
           child: Text(word.pinyin, style: pinyinStyle),
         ),
         Opacity(
-          opacity: showPartOfSpeech ? 1 : 0,
+          opacity: shouldShowPartOfSpeech ? 1 : 0,
           child: Text(
-            word.partOfSpeech + '词',
+            partOfSpeech,
             style: partOfSpeechStyle,
           ),
         ),
