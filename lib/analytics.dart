@@ -23,6 +23,12 @@ void lessonViewed({@required Lesson lesson}) =>
       'Subtitle': lesson.subtitle,
     });
 
+void wordViewed({@required Word word}) => trackEvent('Word Viewed', props: {
+      'ID': word.id,
+      'word': word.word,
+      'pinyin': word.pinyin,
+    });
+
 void trackEvent(String eventName, {Map<String, String> props}) async {
   if (props == null) {
     props = {};

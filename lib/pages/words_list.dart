@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
+import 'package:chinese_words/analytics.dart' as analytics;
 import 'package:chinese_words/models.dart';
+
+import 'word_details.dart';
 
 class WordsList extends StatelessWidget {
   const WordsList({Key key, this.title, this.lesson}) : super(key: key);
@@ -50,7 +53,16 @@ class WordsList extends StatelessWidget {
             .copyWith(p: TextStyle(color: Colors.white70)),
       ),
       trailing: Text(word.partOfSpeech),
-      onTap: () {},
+      onTap: () {
+        analytics.wordViewed(word: word);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WordDetails(word: word),
+          ),
+        );
+      },
     );
   }
 }

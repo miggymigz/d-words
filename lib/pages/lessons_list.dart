@@ -120,9 +120,11 @@ class LessonsList extends StatelessWidget {
 
         analytics.lessonViewed(lesson: lesson);
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => WordsList(title: title, lesson: lesson)));
+          context,
+          MaterialPageRoute(
+            builder: (context) => WordsList(title: title, lesson: lesson),
+          ),
+        );
       },
     );
   }
