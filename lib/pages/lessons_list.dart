@@ -92,7 +92,7 @@ class LessonsList extends StatelessWidget {
 
   Widget _buildCollectionHeader(Collection collection) {
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Text(
         collection.name,
         style: TextStyle(color: Colors.white70),
