@@ -145,6 +145,10 @@ class LessonsList extends StatelessWidget {
       localizations.btnStartTest,
       icon: Icons.explore,
       onTap: () {
+        // update TTS state
+        StoreProvider.of<AppState>(context)
+            .dispatch(CheckTtsAvailabilityAction());
+
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => QuizSettings()));
       },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:screen/screen.dart';
 
 import 'package:chinese_words/models.dart';
 import 'package:chinese_words/services.dart';
@@ -40,6 +41,17 @@ class _WordsQuizState extends State<WordsQuiz> {
     _currentWord = provider.nextWord();
     _isRevealed = false;
     _speakCurrentWord();
+
+    // keep screen awake while we're in this screen
+    Screen.keepOn(true);
+  }
+
+  @override
+  void dispose() {
+    // remove wake lock
+    Screen.keepOn(false);
+
+    super.dispose();
   }
 
   @override
