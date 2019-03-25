@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:chinese_words/models.dart';
 
-const platform = const MethodChannel('com.example.chinese_words/events');
+const platform = const MethodChannel('io.migzdev.dwords/events');
 
 void quizStarted({
   @required QuizType quizType,

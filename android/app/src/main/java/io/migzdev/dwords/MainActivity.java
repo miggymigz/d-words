@@ -1,4 +1,4 @@
-package com.example.chinese_words;
+package io.migzdev.dwords;
 
 import android.os.Bundle;
 
@@ -13,7 +13,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
 public class MainActivity extends FlutterActivity {
-  private static final String ANALYTICS_EVENTS_CHANNEL = "com.example.chinese_words/events";
+  private static final String ANALYTICS_EVENTS_CHANNEL = "io.migzdev.dwords/events";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
