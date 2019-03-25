@@ -14,13 +14,17 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) {
           ?.toList(),
       selectedLessonIds:
           (json['selectedLessonIds'] as List)?.map((e) => e as String)?.toSet(),
-      quizType: _$enumDecodeNullable(_$QuizTypeEnumMap, json['quizType']));
+      quizType: _$enumDecodeNullable(_$QuizTypeEnumMap, json['quizType']),
+      useTts: json['useTts'] as bool,
+      ttsAvailable: json['ttsAvailable'] as bool);
 }
 
 Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'collections': instance.collections,
       'selectedLessonIds': instance.selectedLessonIds?.toList(),
-      'quizType': _$QuizTypeEnumMap[instance.quizType]
+      'quizType': _$QuizTypeEnumMap[instance.quizType],
+      'useTts': instance.useTts,
+      'ttsAvailable': instance.ttsAvailable
     };
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {

@@ -69,6 +69,22 @@ String quizTypeToString(BuildContext context, QuizType quizType) {
   throw AssertionError('Unknown quizType="$quizType"');
 }
 
+/// Creates a small description of the TTS setting value
+///  based on the given flags
+String stringifyTtsState(bool useTts, bool ttsAvailable) {
+  print('useTts: $useTts, ttsAvailable: $ttsAvailable');
+
+  if (useTts && ttsAvailable) {
+    return 'Yes';
+  }
+
+  if (useTts && !ttsAvailable) {
+    return 'Yes (TTS needs configuration)';
+  }
+
+  return 'No';
+}
+
 /// Combines all the lessons in each of the given collections.
 ///
 /// The resulting list contains a pair of the collection index and the lesson index.

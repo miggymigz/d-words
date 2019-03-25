@@ -10,10 +10,12 @@ class WordsQuiz extends StatefulWidget {
     Key key,
     this.quizType,
     this.words,
+    this.useTts,
   }) : super(key: key);
 
   final QuizType quizType;
   final List<Word> words;
+  final bool useTts;
 
   @override
   _WordsQuizState createState() => _WordsQuizState(
@@ -42,16 +44,24 @@ class _WordsQuizState extends State<WordsQuiz> {
 
   @override
   Widget build(BuildContext context) {
+    // only show the TTS icon if the current item type is pinyin
+    // or the answer is already revealed
+    final actions = widget.useTts &&
+            (provider.currentItemType == QuizItemType.Pinyin || _isRevealed)
+        ? [
+            IconButton(
+              icon: Icon(Icons.volume_up),
+              onPressed: _speakCurrentWord,
+            ),
+          ]
+        : null;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.volume_up),
-            onPressed: _speakCurrentWord,
-          ),
-        ],
+        actions: actions,
+        iconTheme: IconThemeData(color: Colors.blueAccent),
       ),
       body: _buildBody(),
     );
@@ -79,6 +89,19 @@ class _WordsQuizState extends State<WordsQuiz> {
   }
 
   void _speakCurrentWord() async {
+    // do nothing if useTts is false
+    if (!widget.useTts) {
+      return;
+    }
+
+    // tts should not be played if the current quiz item is chinese
+    // and it is not yet revealed
+    if (provider.currentItemType == QuizItemType.Hanzi && !_isRevealed) {
+      return;
+    }
+
+    // only play TTS if we're sure that the language pack for
+    // chinese (China) is really available
     if (await tts.isLanguageAvailable('zh-CN')) {
       await tts.setLanguage('zh-CN');
       await tts.speak(_currentWord.word);

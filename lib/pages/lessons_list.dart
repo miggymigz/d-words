@@ -37,25 +37,34 @@ class LessonsList extends StatelessWidget {
       centerTitle: true,
       elevation: 0,
       backgroundColor: Colors.transparent,
+      iconTheme: IconThemeData(color: Colors.blueAccent),
       actions: [
-        Builder(
-          builder: (context) => IconButton(
-                icon: Icon(Icons.refresh, color: Colors.blueAccent),
-                onPressed: () {
-                  Scaffold.of(context)
-                    ..removeCurrentSnackBar()
-                    ..showSnackBar(SnackBar(
-                      content: Text(localizations.lblUpdatingLessons),
-                      duration: Duration(seconds: 1),
-                    ));
-
-                  analytics.refreshTapped();
-                  StoreProvider.of<AppState>(context)
-                      .dispatch(FetchCollectionsAction());
-                },
-              ),
-        ),
+        _buildAppBarRefreshAction(),
       ],
+    );
+  }
+
+  Widget _buildAppBarRefreshAction() {
+    return Builder(
+      builder: (context) {
+        final localizations = AppLocalizations.of(context).lessons;
+
+        return IconButton(
+          icon: Icon(Icons.refresh),
+          onPressed: () {
+            Scaffold.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                content: Text(localizations.lblUpdatingLessons),
+                duration: Duration(seconds: 1),
+              ));
+
+            analytics.refreshTapped();
+            StoreProvider.of<AppState>(context)
+                .dispatch(FetchCollectionsAction());
+          },
+        );
+      },
     );
   }
 

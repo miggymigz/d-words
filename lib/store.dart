@@ -23,14 +23,14 @@ Future<Store<AppState>> createStore() async {
   final store = Store<AppState>(
     appReducers,
     initialState: loadedInitialState ?? AppState.initial(),
-    middleware: [appMiddleware, persistor.createMiddleware()],
+    middleware: [epics, persistor.createMiddleware()],
   );
 
-  // fetch collections if initialState is null
-  // e.g., first install of app or user cleared data
-  if (loadedInitialState.collections.length == 0) {
-    store.dispatch(FetchCollectionsAction());
-  }
+  // check for updates every time users open the app
+  store.dispatch(FetchCollectionsAction());
+
+  // check for TTS availability too
+  store.dispatch(CheckTtsAvailabilityAction());
 
   return store;
 }

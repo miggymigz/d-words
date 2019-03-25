@@ -8,10 +8,12 @@ const platform = const MethodChannel('io.migzdev.dwords/events');
 void quizStarted({
   @required QuizType quizType,
   @required Set<String> lessonIds,
+  @required bool useTts,
 }) =>
     trackEvent('Quiz Started', props: {
       'Type': quizType.toString(),
       'Lesson IDs': lessonIds.toString(),
+      'TTS used': useTts.toString(),
     });
 
 void refreshTapped() => trackEvent('Refresh Tapped');

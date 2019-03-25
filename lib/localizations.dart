@@ -16,6 +16,8 @@ class AppLocalizations {
       app: AppLocalizedValues(
         title: 'D Words',
         lblFeatureNotAvailable: 'This feature is coming soon!',
+        lblFeatureAndroidOnly:
+            'This feature is only available to Android users.',
         dialogTitleInfo: 'Info',
         dialogBtnOkay: 'OKAY',
       ),
@@ -48,6 +50,7 @@ class AppLocalizations {
       app: AppLocalizedValues(
         title: 'D 낱말',
         lblFeatureNotAvailable: '이 기능은 곧 제공 될 예정입니다.',
+        lblFeatureAndroidOnly: '이 기능은 Android 사용자 만 사용할 수 있습니다.',
         dialogTitleInfo: '정보',
         dialogBtnOkay: '승인',
       ),
@@ -118,11 +121,13 @@ class AppLocalizedValues {
   const AppLocalizedValues({
     @required this.title,
     @required this.lblFeatureNotAvailable,
+    @required this.lblFeatureAndroidOnly,
     @required this.dialogTitleInfo,
     @required this.dialogBtnOkay,
   });
   final String title;
   final String lblFeatureNotAvailable;
+  final String lblFeatureAndroidOnly;
   final String dialogTitleInfo;
   final String dialogBtnOkay;
 }

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -41,8 +44,10 @@ class QuizSettings extends StatelessWidget {
                     helper.quizTypeToString(context, store.state.quizType),
                 builder: (context, quizType) => Text(quizType),
               ),
-              onTap: () => showDialog<QuizType>(
-                  context: context, builder: (context) => QuizTypeChooser()),
+              onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => QuizTypeChooser(),
+                  ),
             ),
             ListTile(
               title: Text(localizations.settingLblLessons),
@@ -64,6 +69,7 @@ class QuizSettings extends StatelessWidget {
               onTap: () => showDialog<Set<String>>(
                   context: context, builder: (context) => LessonChooser()),
             ),
+            _buildSettingUseTts(context),
             ListTile(
               title: Text(localizations.settingLblDefinitionLanguages),
               subtitle: Text(localizations.settingValLanguageEnglish),
@@ -80,6 +86,63 @@ class QuizSettings extends StatelessWidget {
           child: _buildStartQuizButton(context),
         ),
       ],
+    );
+  }
+
+  Widget _buildSettingUseTts(BuildContext context) {
+    final localizations = AppLocalizations.of(context).app;
+
+    return ListTile(
+      title: Text('Use Text-to-Speech'),
+      subtitle: StoreConnector<AppState, AppState>(
+        converter: (store) => store.state,
+        builder: (context, state) {
+          final value =
+              helper.stringifyTtsState(state.useTts, state.ttsAvailable);
+          return Text(
+            value,
+            style: const TextStyle(fontStyle: FontStyle.italic),
+          );
+        },
+      ),
+      trailing: Builder(
+        builder: (context) => Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: () async {
+                    // this app, for the most part, supports both platforms
+                    // but this one will only work in Android, sorry iOS users :(
+                    if (Platform.isAndroid) {
+                      final intent = AndroidIntent(
+                        action: 'com.android.settings.TTS_SETTINGS',
+                      );
+                      await intent.launch();
+                    } else {
+                      Scaffold.of(context)
+                        ..removeCurrentSnackBar()
+                        ..showSnackBar(SnackBar(
+                          content: Text(localizations.lblFeatureAndroidOnly),
+                          duration: Duration(seconds: 1),
+                        ));
+                    }
+                  },
+                ),
+                StoreConnector<AppState, bool>(
+                  converter: (store) => store.state.useTts,
+                  builder: (context, useTts) => Switch(
+                        value: useTts,
+                        onChanged: (newValue) =>
+                            StoreProvider.of<AppState>(context)
+                                .dispatch(ChangeUseTtsAction(value: newValue)),
+                      ),
+                ),
+              ],
+            ),
+      ),
+      onTap: () => StoreProvider.of<AppState>(context)
+          .dispatch(ChangeUseTtsAction(toggle: true)),
     );
   }
 
@@ -113,9 +176,14 @@ class QuizSettings extends StatelessWidget {
 
           final words = helper.getSelectedLessonsWords(stateSnapshot);
           final quizType = stateSnapshot.quizType;
+          final useTts = stateSnapshot.useTts;
 
           analytics.quizStarted(
-              lessonIds: selectedLessonIds, quizType: quizType);
+            lessonIds: selectedLessonIds,
+            quizType: quizType,
+            useTts: useTts,
+          );
+
           Navigator.pop(context);
           Navigator.push(
             context,
@@ -123,6 +191,7 @@ class QuizSettings extends StatelessWidget {
               builder: (context) => WordsQuiz(
                     words: words,
                     quizType: quizType,
+                    useTts: useTts,
                   ),
             ),
           );

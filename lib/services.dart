@@ -7,8 +7,10 @@ enum QuizItemType { Hanzi, Pinyin }
 class QuizService {
   QuizService({this.words, this.quizType}) {
     if (quizType == QuizType.HanziOnly) {
+      _currentItemType = QuizItemType.Hanzi;
       _hanziItemIndices = List.generate(words.length, (index) => index);
     } else if (quizType == QuizType.PinyinOnly) {
+      _currentItemType = QuizItemType.Pinyin;
       _pinyinItemIndices = List.generate(words.length, (index) => index);
     } else {
       _hanziItemIndices = List.generate(words.length, (index) => index);
