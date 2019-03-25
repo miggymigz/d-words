@@ -177,6 +177,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_tts:
+    dependency: "direct main"
+    description:
+      name: flutter_tts
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.4"
   front_end:
     dependency: transitive
     description:

@@ -139,27 +139,15 @@ class QuizTypeChooser extends StatelessWidget {
 
     return SimpleDialog(
       title: Text(localizations.dialogTitleChooseQuizType),
-      children: [
-        _buildOption(
-          context: context,
-          label: localizations.settingValPinyinOnly,
-          type: QuizType.PinyinOnly,
-        ),
-        _buildOption(
-          context: context,
-          label: localizations.settingValHanziOnly,
-          type: QuizType.HanziOnly,
-        ),
-        _buildOption(
-          context: context,
-          label: localizations.settingValHanziPinyin,
-          type: QuizType.PinyinHanzi,
-        ),
-      ],
+      children: QuizType.values
+          .map((type) => _buildOption(context: context, type: type))
+          .toList(),
     );
   }
 
-  Widget _buildOption({BuildContext context, String label, QuizType type}) {
+  Widget _buildOption({BuildContext context, QuizType type}) {
+    final label = helper.quizTypeToString(context, type);
+
     return SimpleDialogOption(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

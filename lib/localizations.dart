@@ -11,7 +11,7 @@ class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const Map<String, LocalizedValues> _localizedValues = {
+  static const Map<String, LocalizedValues> _localizedValues = const {
     'en': LocalizedValues(
       app: AppLocalizedValues(
         title: 'D Words',
