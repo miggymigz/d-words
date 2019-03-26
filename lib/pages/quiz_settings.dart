@@ -20,7 +20,14 @@ class QuizSettings extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(localizations.title, style: TextStyle(color: accentColor)),
+        title: Text(
+          localizations.title,
+          style: TextStyle(
+            color: accentColor,
+            fontFamily: 'GoogleSans',
+            fontWeight: FontWeight.w700,
+          ),
+        ),
         elevation: 0,
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.blueAccent),

@@ -89,14 +89,33 @@ String stringifyTtsState(bool useTts, bool ttsAvailable) {
 ///
 /// The resulting list contains a pair of the collection index and the lesson index.
 /// Header items will have its lesson index as null.
-List<List<int>> createListItems(List<Collection> collections) {
+List<List<int>> createListItems(
+  List<Collection> collections, {
+  bool includeCollection(Collection collection),
+  bool includeLesson(Lesson lesson),
+}) {
   final items = List<List<int>>();
+
+  collectionLoop:
   for (var i = 0; i < collections.length; i++) {
+    final collection = collections[i];
+
+    if (includeCollection != null && !includeCollection(collection)) {
+      continue collectionLoop;
+    }
+
     // will represent header row
     items.add([i, null]);
 
     // collect all lessons in current collection
-    for (var j = 0; j < collections[i].lessons.length; j++) {
+    lessonLoop:
+    for (var j = 0; j < collection.lessons.length; j++) {
+      final lesson = collection.lessons[j];
+
+      if (includeLesson != null && !includeLesson(lesson)) {
+        continue lessonLoop;
+      }
+
       items.add([i, j]);
     }
   }

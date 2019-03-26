@@ -22,6 +22,10 @@ AppState appReducers(AppState state, dynamic action) {
     return changeUseTts(state, action);
   }
 
+  if (action is ToggleLessonVisibilityAction) {
+    return toggleLessonVisibility(state, action);
+  }
+
   return state;
 }
 
@@ -61,3 +65,15 @@ AppState changeUseTts(
         useTts: action.toggle != null && action.toggle
             ? !state.useTts
             : action.value);
+
+AppState toggleLessonVisibility(
+        AppState state, ToggleLessonVisibilityAction action) =>
+    state.hiddenLessonIds.contains(action.lessonId)
+        ? state.copyWith(
+            hiddenLessonIds: Set<String>.from(state.hiddenLessonIds)
+              ..remove(action.lessonId),
+          )
+        : state.copyWith(
+            hiddenLessonIds: Set<String>.from(state.hiddenLessonIds)
+              ..add(action.lessonId),
+          );

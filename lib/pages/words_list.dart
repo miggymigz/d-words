@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:chinese_words/analytics.dart' as analytics;
+import 'package:chinese_words/localizations.dart';
 import 'package:chinese_words/models.dart';
+import 'package:chinese_words/store.dart';
 
 import 'word_details.dart';
 
@@ -22,11 +25,30 @@ class WordsList extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.blueAccent),
+        actions: [
+          _buildToggleLessonVisibilityAction(context),
+        ],
       ),
       body: ListView.builder(
         itemCount: lesson.words.length,
         itemBuilder: _buildRow,
       ),
+    );
+  }
+
+  Widget _buildToggleLessonVisibilityAction(BuildContext context) {
+    final localizations = AppLocalizations.of(context).lessonDetails;
+
+    return StoreConnector<AppState, bool>(
+      converter: (store) => store.state.hiddenLessonIds.contains(lesson.id),
+      builder: (context, isVisible) => IconButton(
+            icon: Icon(isVisible ? Icons.visibility_off : Icons.visibility),
+            onPressed: () => StoreProvider.of<AppState>(context)
+                .dispatch(ToggleLessonVisibilityAction(lesson.id)),
+            tooltip: isVisible
+                ? localizations.actionTooltipLessonHidden
+                : localizations.actionTooltipLessonVisible,
+          ),
     );
   }
 

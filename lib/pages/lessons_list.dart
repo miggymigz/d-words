@@ -40,6 +40,7 @@ class LessonsList extends StatelessWidget {
       iconTheme: IconThemeData(color: Colors.blueAccent),
       actions: [
         _buildAppBarRefreshAction(),
+        _buildOverflowMenu(context),
       ],
     );
   }
@@ -68,6 +69,27 @@ class LessonsList extends StatelessWidget {
     );
   }
 
+  Widget _buildOverflowMenu(BuildContext context) {
+    final localizations = AppLocalizations.of(context).lessons;
+
+    return PopupMenuButton(
+      onSelected: (value) => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => HiddenLessonsList(
+                    collectionHeaderBuilder: _buildCollectionHeader,
+                    lessonRowBuilder: _buildLessonRow,
+                  ),
+            ),
+          ),
+      itemBuilder: (context) => [
+            PopupMenuItem(
+              child: Text(localizations.overflowLblHiddenLessons),
+              value: 'hidden lessons',
+            ),
+          ],
+    );
+  }
+
   Widget _buildBody() {
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
@@ -77,7 +99,11 @@ class LessonsList extends StatelessWidget {
         }
 
         final collections = state.collections;
-        final items = helper.createListItems(collections);
+        final hiddenLessonIds = state.hiddenLessonIds;
+        final items = helper.createListItems(collections,
+            includeCollection: (collection) => collection.lessons
+                .any((lesson) => !hiddenLessonIds.contains(lesson.id)),
+            includeLesson: (lesson) => !hiddenLessonIds.contains(lesson.id));
 
         return ListView.builder(
           itemCount: items.length,
@@ -152,6 +178,94 @@ class LessonsList extends StatelessWidget {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => QuizSettings()));
       },
+    );
+  }
+}
+
+typedef CollectionHeaderBuilder = Widget Function(Collection);
+typedef LessonRowBuilder = Widget Function(BuildContext, Lesson, int);
+
+class HiddenLessonsList extends StatelessWidget {
+  HiddenLessonsList({
+    @required this.collectionHeaderBuilder,
+    @required this.lessonRowBuilder,
+  });
+
+  final CollectionHeaderBuilder collectionHeaderBuilder;
+  final LessonRowBuilder lessonRowBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context).hiddenLessons;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          localizations.title,
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+            fontFamily: 'GoogleSans',
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Theme.of(context).accentColor),
+      ),
+      body: StoreConnector<AppState, AppState>(
+        converter: (store) => store.state,
+        builder: (context, state) {
+          final localizations = AppLocalizations.of(context).hiddenLessons;
+          final collections = state.collections;
+          final hiddenLessonIds = state.hiddenLessonIds;
+
+          if (hiddenLessonIds.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.book,
+                    size: 64,
+                    color: Colors.white30,
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    localizations.lblNoHiddenLessons,
+                    style: TextStyle(
+                      color: Colors.white54,
+                      fontSize: 24,
+                      fontFamily: 'GoogleSans',
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          final items = helper.createListItems(collections,
+              includeCollection: (collection) => collection.lessons
+                  .any((lesson) => hiddenLessonIds.contains(lesson.id)),
+              includeLesson: (lesson) => hiddenLessonIds.contains(lesson.id));
+
+          return ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, i) {
+              final collectionIndex = items[i][0];
+              final collection = collections[collectionIndex];
+
+              // header row
+              if (items[i][1] == null) {
+                return collectionHeaderBuilder(collection);
+              }
+
+              final lessonIndex = items[i][1];
+              final lesson = collection.lessons[lessonIndex];
+              return lessonRowBuilder(context, lesson, lessonIndex);
+            },
+          );
+        },
+      ),
     );
   }
 }

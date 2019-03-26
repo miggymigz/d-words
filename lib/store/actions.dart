@@ -44,3 +44,9 @@ class ChangeTtsAvailabilityAction {
 
   ChangeTtsAvailabilityAction(this.isAvailable);
 }
+
+class ToggleLessonVisibilityAction {
+  final String lessonId;
+
+  ToggleLessonVisibilityAction(this.lessonId);
+}

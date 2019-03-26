@@ -7,6 +7,7 @@ part 'state.g.dart';
 class AppState {
   final List<Collection> collections;
   final Set<String> selectedLessonIds;
+  final Set<String> hiddenLessonIds;
   final QuizType quizType;
   final bool useTts;
   final bool ttsAvailable;
@@ -14,6 +15,7 @@ class AppState {
   AppState({
     this.collections,
     this.selectedLessonIds,
+    this.hiddenLessonIds,
     this.quizType,
     this.useTts,
     this.ttsAvailable,
@@ -22,6 +24,7 @@ class AppState {
   factory AppState.initial() => AppState(
         collections: List.unmodifiable([]),
         selectedLessonIds: {},
+        hiddenLessonIds: {},
         quizType: QuizType.HanziOnly,
         useTts: true,
         ttsAvailable: false,
@@ -33,6 +36,7 @@ class AppState {
   AppState copyWith({
     List<Collection> collections,
     Set<String> selectedLessonIds,
+    Set<String> hiddenLessonIds,
     QuizType quizType,
     bool useTts,
     bool ttsAvailable,
@@ -40,6 +44,7 @@ class AppState {
       AppState(
         collections: collections ?? this.collections,
         selectedLessonIds: selectedLessonIds ?? this.selectedLessonIds,
+        hiddenLessonIds: hiddenLessonIds ?? this.hiddenLessonIds,
         quizType: quizType ?? this.quizType,
         useTts: useTts ?? this.useTts,
         ttsAvailable: ttsAvailable ?? this.ttsAvailable,

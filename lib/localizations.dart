@@ -26,6 +26,15 @@ class AppLocalizations {
         title: 'D Words',
         btnStartTest: 'Start Test',
         lblUpdatingLessons: 'Updating Lessons...',
+        overflowLblHiddenLessons: 'Hidden Lessons',
+      ),
+      hiddenLessons: HiddenLessonsLocalizedValues(
+        title: 'Hidden Lessons',
+        lblNoHiddenLessons: 'No Hidden Lessons',
+      ),
+      lessonDetails: LessonDetailsLocalizedValues(
+        actionTooltipLessonVisible: 'Hide Lesson',
+        actionTooltipLessonHidden: 'Show Lesson',
       ),
       quizSettings: QuizSettingsLocalizedValues(
         title: 'Quiz Settings',
@@ -66,6 +75,15 @@ class AppLocalizations {
         title: 'D 낱말',
         btnStartTest: '퀴즈 시작',
         lblUpdatingLessons: '수업 업데이트...',
+        overflowLblHiddenLessons: '숨은 교훈',
+      ),
+      hiddenLessons: HiddenLessonsLocalizedValues(
+        title: '숨은 교훈',
+        lblNoHiddenLessons: '숨은 수업이 없다',
+      ),
+      lessonDetails: LessonDetailsLocalizedValues(
+        actionTooltipLessonVisible: '숨겨진 교훈',
+        actionTooltipLessonHidden: '쇼 교훈',
       ),
       quizSettings: QuizSettingsLocalizedValues(
         title: '퀴즈 설정',
@@ -98,6 +116,12 @@ class AppLocalizations {
   LessonLocalizedValues get lessons =>
       _localizedValues[locale.languageCode].lessons;
 
+  HiddenLessonsLocalizedValues get hiddenLessons =>
+      _localizedValues[locale.languageCode].hiddenLessons;
+
+  LessonDetailsLocalizedValues get lessonDetails =>
+      _localizedValues[locale.languageCode].lessonDetails;
+
   QuizSettingsLocalizedValues get quizSettings =>
       _localizedValues[locale.languageCode].quizSettings;
 
@@ -125,12 +149,16 @@ class LocalizedValues {
   const LocalizedValues({
     @required this.app,
     @required this.lessons,
+    @required this.hiddenLessons,
+    @required this.lessonDetails,
     @required this.quizSettings,
     @required this.quiz,
   });
 
   final AppLocalizedValues app;
   final LessonLocalizedValues lessons;
+  final HiddenLessonsLocalizedValues hiddenLessons;
+  final LessonDetailsLocalizedValues lessonDetails;
   final QuizSettingsLocalizedValues quizSettings;
   final QuizLocalizedValues quiz;
 }
@@ -158,11 +186,23 @@ class LessonLocalizedValues {
     @required this.title,
     @required this.btnStartTest,
     @required this.lblUpdatingLessons,
+    @required this.overflowLblHiddenLessons,
   });
 
   final String title;
   final String btnStartTest;
   final String lblUpdatingLessons;
+  final String overflowLblHiddenLessons;
+}
+
+class LessonDetailsLocalizedValues {
+  const LessonDetailsLocalizedValues({
+    @required this.actionTooltipLessonVisible,
+    @required this.actionTooltipLessonHidden,
+  });
+
+  final String actionTooltipLessonVisible;
+  final String actionTooltipLessonHidden;
 }
 
 class QuizSettingsLocalizedValues {
@@ -213,4 +253,14 @@ class QuizLocalizedValues {
   final String dialogExitTitle;
   final String dialogExitContent;
   final String dialogExitBtnDiscard;
+}
+
+class HiddenLessonsLocalizedValues {
+  const HiddenLessonsLocalizedValues({
+    @required this.title,
+    @required this.lblNoHiddenLessons,
+  });
+
+  final String title;
+  final String lblNoHiddenLessons;
 }
