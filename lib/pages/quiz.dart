@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:screen/screen.dart';
 
+import 'package:chinese_words/localizations.dart';
 import 'package:chinese_words/models.dart';
 import 'package:chinese_words/services.dart';
 import 'package:chinese_words/widgets.dart';
@@ -68,15 +69,49 @@ class _WordsQuizState extends State<WordsQuiz> {
           ]
         : null;
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: actions,
-        iconTheme: IconThemeData(color: Colors.blueAccent),
+    return WillPopScope(
+      onWillPop: _willPopScope,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: actions,
+          iconTheme: IconThemeData(color: Colors.blueAccent),
+        ),
+        body: _buildBody(),
       ),
-      body: _buildBody(),
     );
+  }
+
+  Future<bool> _willPopScope() {
+    final localizations = AppLocalizations.of(context);
+    final accentColor = Theme.of(context).accentColor;
+    final dialogBtnStyle = TextStyle(color: accentColor);
+
+    return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text(localizations.quiz.dialogExitTitle),
+                content: Text(localizations.quiz.dialogExitContent),
+                actions: [
+                  FlatButton(
+                    child: Text(
+                      localizations.app.dialogBtnCancel,
+                      style: dialogBtnStyle,
+                    ),
+                    onPressed: () => Navigator.of(context).pop(false),
+                  ),
+                  FlatButton(
+                    child: Text(
+                      localizations.quiz.dialogExitBtnDiscard,
+                      style: dialogBtnStyle,
+                    ),
+                    onPressed: () => Navigator.of(context).pop(true),
+                  ),
+                ],
+              ),
+        ) ??
+        false;
   }
 
   void _onWordTapped() {

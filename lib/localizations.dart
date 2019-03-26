@@ -20,6 +20,7 @@ class AppLocalizations {
             'This feature is only available to Android users.',
         dialogTitleInfo: 'Info',
         dialogBtnOkay: 'OKAY',
+        dialogBtnCancel: 'CANCEL',
       ),
       lessons: LessonLocalizedValues(
         title: 'D Words',
@@ -45,6 +46,12 @@ class AppLocalizations {
         dialogMessageEmptySelectedLessons:
             'You should select one or more lessons!',
       ),
+      quiz: QuizLocalizedValues(
+        dialogExitTitle: 'Discard current progress?',
+        dialogExitContent:
+            'This will not save your current progress and you will have to start over again.',
+        dialogExitBtnDiscard: 'DISCARD',
+      ),
     ),
     'ko': LocalizedValues(
       app: AppLocalizedValues(
@@ -53,6 +60,7 @@ class AppLocalizations {
         lblFeatureAndroidOnly: '이 기능은 Android 사용자 만 사용할 수 있습니다.',
         dialogTitleInfo: '정보',
         dialogBtnOkay: '승인',
+        dialogBtnCancel: '취소',
       ),
       lessons: LessonLocalizedValues(
         title: 'D 낱말',
@@ -77,6 +85,11 @@ class AppLocalizations {
         dialogTitleEmptySelectedLessons: '에러',
         dialogMessageEmptySelectedLessons: '하나 이상의 수업을 선택해야합니다.',
       ),
+      quiz: QuizLocalizedValues(
+        dialogExitTitle: '진행을 파기 하시겠습니까?',
+        dialogExitContent: '그러면 현재 지행 상황을 저장하지 않으므로 다시 시작해야합니다.',
+        dialogExitBtnDiscard: '포기',
+      ),
     ),
   };
 
@@ -87,6 +100,8 @@ class AppLocalizations {
 
   QuizSettingsLocalizedValues get quizSettings =>
       _localizedValues[locale.languageCode].quizSettings;
+
+  QuizLocalizedValues get quiz => _localizedValues[locale.languageCode].quiz;
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -111,10 +126,13 @@ class LocalizedValues {
     @required this.app,
     @required this.lessons,
     @required this.quizSettings,
+    @required this.quiz,
   });
+
   final AppLocalizedValues app;
   final LessonLocalizedValues lessons;
   final QuizSettingsLocalizedValues quizSettings;
+  final QuizLocalizedValues quiz;
 }
 
 class AppLocalizedValues {
@@ -124,12 +142,15 @@ class AppLocalizedValues {
     @required this.lblFeatureAndroidOnly,
     @required this.dialogTitleInfo,
     @required this.dialogBtnOkay,
+    @required this.dialogBtnCancel,
   });
+
   final String title;
   final String lblFeatureNotAvailable;
   final String lblFeatureAndroidOnly;
   final String dialogTitleInfo;
   final String dialogBtnOkay;
+  final String dialogBtnCancel;
 }
 
 class LessonLocalizedValues {
@@ -138,6 +159,7 @@ class LessonLocalizedValues {
     @required this.btnStartTest,
     @required this.lblUpdatingLessons,
   });
+
   final String title;
   final String btnStartTest;
   final String lblUpdatingLessons;
@@ -162,6 +184,7 @@ class QuizSettingsLocalizedValues {
     @required this.dialogTitleEmptySelectedLessons,
     @required this.dialogMessageEmptySelectedLessons,
   });
+
   final String title;
   final String settingLblQuizType;
   final String settingLblLessons;
@@ -178,4 +201,16 @@ class QuizSettingsLocalizedValues {
   final String dialogTitleChooseLessons;
   final String dialogTitleEmptySelectedLessons;
   final String dialogMessageEmptySelectedLessons;
+}
+
+class QuizLocalizedValues {
+  const QuizLocalizedValues({
+    @required this.dialogExitTitle,
+    @required this.dialogExitContent,
+    @required this.dialogExitBtnDiscard,
+  });
+
+  final String dialogExitTitle;
+  final String dialogExitContent;
+  final String dialogExitBtnDiscard;
 }
