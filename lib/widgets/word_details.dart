@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:chinese_words/models.dart';
+import 'package:chinese_words/models/models.dart';
 
 class WordDetails extends StatelessWidget {
   WordDetails(
